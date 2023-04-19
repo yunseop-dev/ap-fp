@@ -16,6 +16,12 @@ function calc_cart_total(cart, callback) {
 
 var queue_items = [];
 
+function runNext() {
+    var cart = queue_items.shift();
+    calc_cart_total(cart, update_total_dom);
+}
+
 function update_total_queue(cart) {
     queue_items.push(cart);
+    setTimeout(runNext, 0);
 }
