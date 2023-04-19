@@ -1,6 +1,6 @@
 function add_item_to_cart(item) {
     cart = add_item(cart, item);
-    calc_cart_total(cart, update_total_dom);
+    update_total_queue(cart);
 }
 
 function calc_cart_total(cart, callback) {
@@ -12,4 +12,10 @@ function calc_cart_total(cart, callback) {
             callback(total);
         });
     });
+}
+
+var queue_items = [];
+
+function update_total_queue(cart) {
+    queue_items.push(cart);
 }
