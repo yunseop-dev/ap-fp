@@ -1,4 +1,4 @@
-function Queue(worker) {
+function DroppingQueue(max, worker) {
     var queue_items = [];
     var working = false;
 
@@ -21,6 +21,8 @@ function Queue(worker) {
             data: data,
             callback: callback || function () { }
         });
+        while (queue_items.length > max)
+            queue_items.shift();
         setTimeout(runNext, 0);
     };
 }
@@ -32,4 +34,5 @@ function calc_cart_worker(cart, done) {
     });
 }
 
-var update_total_queue = Queue(calc_cart_worker);
+var update_total_queue =
+    DroppingQueue(1, calc_cart_worker);
