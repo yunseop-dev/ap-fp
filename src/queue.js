@@ -9,8 +9,13 @@ function Queue() {
             return;
         working = true;
         var cart = queue_items.shift();
-        calc_cart_total(cart, function (total) {
-            update_total_dom(total);
+        function worker(cart, done) {
+            calc_cart_total(cart, function (total) {
+                update_total_dom(total);
+                done(total);
+            });
+        }
+        worker(cart, function () {
             working = false;
             runNext();
         });
