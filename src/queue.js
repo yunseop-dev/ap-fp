@@ -9,8 +9,9 @@ function Queue(worker) {
             return;
         working = true;
         var item = queue_items.shift();
-        worker(item.data, function () {
+        worker(item.data, function (val) {
             working = false;
+            setTimeout(item.callback, 0, val);
             runNext();
         });
     }
