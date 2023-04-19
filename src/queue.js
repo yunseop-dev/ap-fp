@@ -8,16 +8,18 @@ function Queue(worker) {
         if (queue_items.length === 0)
             return;
         working = true;
-        var cart = queue_items.shift();
-
-        worker(cart, function () {
+        var item = queue_items.shift();
+        worker(item.data, function () {
             working = false;
             runNext();
         });
     }
 
-    return function (cart) {
-        queue_items.push(cart);
+    return function (data, callback) {
+        queue_items.push({
+            data: data,
+            callback: callback || function () { }
+        });
         setTimeout(runNext, 0);
     };
 }
