@@ -1,4 +1,4 @@
-function Queue() {
+function Queue(worker) {
     var queue_items = [];
     var working = false;
 
@@ -9,12 +9,7 @@ function Queue() {
             return;
         working = true;
         var cart = queue_items.shift();
-        function worker(cart, done) {
-            calc_cart_total(cart, function (total) {
-                update_total_dom(total);
-                done(total);
-            });
-        }
+
         worker(cart, function () {
             working = false;
             runNext();
@@ -27,4 +22,11 @@ function Queue() {
     };
 }
 
-var update_total_queue = Queue();
+function calc_cart_worker(cart, done) {
+    calc_cart_total(cart, function (total) {
+        update_total_dom(total);
+        done(total);
+    });
+}
+
+var update_total_queue = Queue(calc_cart_worker);
