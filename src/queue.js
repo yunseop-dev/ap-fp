@@ -15,8 +15,12 @@ function calc_cart_total(cart, callback) {
 }
 
 var queue_items = [];
+var working = false;
 
 function runNext() {
+    if (working)
+        return;
+    working = true;
     var cart = queue_items.shift();
     calc_cart_total(cart, update_total_dom);
 }
